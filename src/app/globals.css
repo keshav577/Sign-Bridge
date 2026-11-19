@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =====================================================================
+   SignBridge - Final colour palette (70 / 20 / 10)
+   ---------------------------------------------------------------------
+   White  #FFFFFF   70%  page backgrounds and cards
+   Grey   #D1D5DB   20%  borders, panels and secondary sections
+   Black  #171717   10%  headings, buttons and navigation
+   (Defined in tailwind.config.js as: white / fog / ink.)
+   ===================================================================== */
+
+/* ---------- Base styles ---------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased dark:bg-ink dark:text-fog;
+    /* a very soft dotted paper texture so the page does not feel flat */
+    background-image: radial-gradient(rgba(23, 23, 23, 0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+  .dark body {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-ink dark:text-white;
+    letter-spacing: -0.01em;
+  }
+  ::selection {
+    background: #171717;
+    color: #ffffff;
+  }
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Clear keyboard focus ring for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ink ring-offset-2 ring-offset-white dark:ring-white dark:ring-offset-ink;
+  }
+}
+
+/* ---------- Reusable classes (so the JSX stays short) ---------- */
+@layer components {
+  /* White content panel with a thin grey border */
+  .panel {
+    @apply rounded-3xl border border-fog bg-white shadow-soft dark:border-white/10 dark:bg-ink-soft;
+  }
+  /* Grey "well" - used inside panels for caption lists, results, etc. */
+  .well {
+    @apply rounded-2xl bg-fog/30 dark:bg-ink;
+  }
+  /* Softer text */
+  .muted {
+    @apply text-ink/70 dark:text-fog;
+  }
+
+  /* Chunky black button that "presses down" like a real key */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-ink px-5 py-2.5 font-bold text-white transition disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-ink;
+    box-shadow: 0 4px 0 0 #d1d5db;
+  }
+  .dark .btn-primary {
+    box-shadow: 0 4px 0 0 #6b7280;
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 0 #d1d5db;
+  }
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 0 #d1d5db;
+  }
+  /* Outlined grey button, turns black on hover */
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-fog bg-white px-5 py-2.5 font-bold text-ink transition hover:border-ink disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/20 dark:bg-transparent dark:text-fog dark:hover:border-white dark:hover:text-white;
+  }
+  /* Make any button smaller (written after the button classes, so it wins) */
+  .btn-sm {
+    @apply px-3.5 py-2 text-sm;
+  }
+  .btn-primary.btn-sm {
+    box-shadow: 0 3px 0 0 #d1d5db;
+  }
+  /* A small on/off toggle chip (used for recognition method, voice, etc.) */
+  .toggle {
+    @apply rounded-xl border border-fog bg-white px-3 py-1.5 text-sm font-semibold text-ink transition hover:border-ink disabled:opacity-40 dark:border-white/15 dark:bg-ink-soft dark:text-fog;
+  }
+  .toggle[aria-pressed="true"] {
+    @apply border-ink bg-ink text-white dark:border-white dark:bg-white dark:text-ink;
+  }
+  /* Text input */
+  .field {
+    @apply w-full rounded-2xl border-2 border-fog bg-white px-4 py-2.5 text-ink placeholder:text-ink/40 focus:border-ink dark:border-white/15 dark:bg-ink dark:text-white;
+  }
+  /* Page layout: sidebar on the left, content on the right (stacked on phones) */
+  .app-shell {
+    @apply mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 md:grid-cols-[250px_minmax(0,1fr)] md:py-8;
+  }
+  /* Handwritten little label above a heading */
+  .eyebrow {
+    @apply text-sm font-bold uppercase tracking-wider text-ink/70 dark:text-fog;
+  }
+  .error-box {
+    @apply flex items-start gap-2 rounded-2xl bg-red-50 p-3 text-sm text-red-800 dark:bg-red-950/50 dark:text-red-200;
+  }
+  .warn-box {
+    @apply rounded-2xl bg-amber-50 p-3 text-sm text-amber-900 dark:bg-amber-950/50 dark:text-amber-200;
+  }
+  /* Caption source labels: Speech = black, Sign = grey */
+  .chip {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold;
+  }
+  .chip-speech {
+    @apply bg-ink text-white dark:bg-white dark:text-ink;
+  }
+  .chip-sign {
+    @apply bg-fog text-ink;
+  }
+  /* A card that looks like a sticky note stuck on the page */
+  .sticky-note {
+    @apply rounded-3xl border border-fog bg-white shadow-soft dark:border-white/10 dark:bg-ink-soft;
+    transform: rotate(1.6deg);
+    transition: transform 0.25s ease;
+  }
+  .sticky-note:hover {
+    transform: rotate(0deg) translateY(-3px);
+  }
+  /* Feature card hover: lifts and gets a black edge */
+  .lift {
+    @apply transition duration-200 hover:-translate-y-1 hover:border-ink dark:hover:border-white;
+  }
+  /* Soft pulsing dot (used for "listening now") */
+  .live-dot {
+    @apply h-2.5 w-2.5 animate-pulse rounded-full bg-ink dark:bg-white;
+  }
+}
